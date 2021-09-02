@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./head.ejs') %>
+<body>
+      <div class="container-login">
+        <form class="login" action="/login" method="POST">
+            <div class="h">
+            <h2>To-do-App</h2>
+            </div>
+           <label for="email">Email <p class="popup"><%= validation %></p></label>
+           <input type="email" name="email" id="email" class="inputs" placeholder="Enter your email" required>
+           <label for="password">Password <p class="popup"><%= validationp %></p></label>
+           <input type="password" name="Password" id="password" class="inputs" placeholder="Enter your password" required>
+           <div class="submit">
+           <input type="submit" value="Login" class="s-login">
+           <a href="./signup" class="Signup">Sign up</a>
+           </div>
+        </form>
+      </div>
+</body>
+</html>

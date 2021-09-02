@@ -1,0 +1,80 @@
+body{
+    margin: 0px;
+    font-family:sans-serif
+}
+.container-login{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    flex-direction: column;
+}
+.login{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 60%;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: center;
+}
+.submit{
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    
+}
+input{
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid rgb(221, 215, 215);
+    padding-left: 10px;
+    -webkit-appearance: none ;
+}
+label{
+    font-size: 17px;
+}
+
+label,input{
+    margin: 10px;
+}
+.s-login,.Signup{
+   padding: 15px;
+   height: fit-content;
+   width: 50%;
+   cursor: pointer;
+   border: 1px solid rgb(221, 215, 215);
+   font-size: 15px;
+   background-color: rgba(0,1,223,0.6);
+   color: white;
+   border-radius: 10px;
+   margin: 10px;
+}
+a{
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+.inputs:focus{
+    outline: none !important;
+    border: 2px solid rgb(96, 207, 96);
+}
+.s-login:hover,.Signup:hover{
+    background-color: rgb(96, 207, 96); 
+}
+
+.h{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.popup{
+    margin: 0px;
+    display: inline-block;
+    margin-left: 20px;
+    color: red;
+    font-size: 10px;
+}

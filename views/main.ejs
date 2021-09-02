@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2alyj13UOpV5gihvNxxR0XZ57aFRAtzz4_Q&usqp=CAU" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a07e4b20fd.js" crossorigin="anonymous"></script>
+    <title>TO-DO</title>
+</head>
+<body>
+    <div class="container">
+    <div class="main">
+     <div class="heading">
+            <div class="child one">
+            <h1>Tasks </h1>
+            <span style="font-family:Roboto">List</span>
+            </div>
+            <div class="child two">
+            <i class="fas fa-plus-circle"></i>
+            <span class="list" style="font-family: Roboto;">Add Item</span>
+            </div>
+     </div>
+     </div>
+     </div>
+    <div class="main3 " id="popup">
+        
+        <form action="/innerdetails" method="POST"> 
+    <div class="blur">
+        <p class="new">Add New List</p>
+        <input type="text" name="List" id="text" placeholder="Add New List" required>
+        <p class="required">* Required</p>
+        <div class="add-close">
+        <input type="submit" class="s1" value="Add">
+        <a style="text-decoration: none;text-align: center;font-weight: 500;"class="s2">Close</a>
+        </div>
+    </div>
+</form>
+    </div>
+    <div class="main4">
+        <div id="addlist">
+            <% if(title.length>0){ %>
+                <% title.map((sub)=>{ %>
+                    <div class="todo">
+                        <div class="sub"><%=sub.head%></div>
+                        <div class="ali">
+                         <%   title.map((i)=>{ %>
+                            <% if(i.data.length>0){ %>
+                                <%i.data.map(i1=>{ %>
+                                    <div class="il">
+                                        <p class="con" ><%= i1%></p>
+                                        <button class="bs">Mark Done</button>
+                                      </div>
+                               <% })%>
+                            <% }%>
+                        <% }) %>
+                        </div>
+                        <div class="foot">
+                            <div class="sd">
+                                <i class="fas fa-trash-alt delete" data-key="<%=sub.unique%>"></i>
+                                <i class="fas fa-plus-circle adding" data-key="<%=sub.unique%>"></i>
+                            </div>
+                        </div>
+                    </div> 
+                    <% }) %>
+            <% }  else{ %>
+                <div class="main2" >
+                    <div id="Empty">No Items in the todo list</div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    <div class="main3 " id="popup2">
+    <form action="/tododata" method="POST">
+        <div class="blur">
+            <p class="new">Add New Item</p>
+            <input type="text" style="display: none;" value="" name="uniqueid" id="diff">
+            <input type="text" name="List" id="text1" placeholder="Add New List" required>
+            <p class="required">* Required</p>
+            <div class="add-close">
+            <input type="submit" name="add" id="submit1" class="s1" value="Add">
+             <a style="text-decoration: none;text-align: center;font-weight: 500;"class="s2">Close</a>
+        </div>
+    </div>
+    </form>
+    </div>
+</body>
+<script>
+    var required_element=document.getElementsByClassName("required")[0];
+var no_item=document.getElementById("Empty");
+let popup1_open=()=>{
+    document.getElementsByClassName("container")[0].style.filter="blur(15px)";
+    document.getElementsByClassName("main4")[0].style.filter="blur(15px)";
+    let popup=document.getElementById("popup");
+    popup.style.display="initial";
+}
+let popup1_close=()=>{
+    document.getElementsByClassName("container")[0].style.filter="blur(0px)";
+    let popup=document.getElementById("popup");
+    popup.style.display="none";
+    required_element.style.display="none";
+    document.getElementsByClassName("main4")[0].style.filter="blur(0px)";
+}
+let popup2_open=()=>{
+    document.getElementsByClassName("container")[0].style.filter="blur(15px)";
+    document.getElementsByClassName("main4")[0].style.filter="blur(15px)";
+    let popup=document.getElementById("popup2");
+    popup.style.display="initial";
+}
+let popup2_close=()=>{
+    document.getElementsByClassName("container")[0].style.filter="blur(0px)";
+    let popup=document.getElementById("popup2");
+    popup.style.display="none";
+    document.getElementsByClassName("required")[1].style.display="none";
+    document.getElementsByClassName("main4")[0].style.filter="blur(0px)";
+}
+let addlist= document.getElementsByClassName("two")[0];
+addlist.addEventListener("click",()=>{
+    popup1_open();
+})
+let closeb=document.getElementsByClassName("s2")[0];
+closeb.addEventListener("click",()=>{
+    console.log("close");
+    popup1_close();
+})
+let add=document.getElementsByClassName("s1")[0];
+add.addEventListener("click",()=>{
+     if(document.getElementById("text").value=="")
+     {
+         required_element.style.display="initial";
+     }
+})
+let icons=document.querySelectorAll(".adding");
+     icons.forEach(element => {
+         element.addEventListener('click',()=>{
+           const q=element.getAttribute('data-key');
+           popup2_open();
+           let y=document.getElementById('diff');
+           y.setAttribute('value',q);
+         });
+     });
+let add1=document.getElementById("submit1");
+add1.addEventListener("click",()=>{
+  if(document.getElementById("text1").value=="")
+ {
+       document.getElementsByClassName("required")[1].style.display="initial";  
+ }
+  else{
+       popup2_close();     
+   }
+})
+</script>
+</html>
