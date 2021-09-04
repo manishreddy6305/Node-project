@@ -32,15 +32,11 @@ app.post('/details',(req,res)=>{
         console.log(err);
         else
         {  
-            console.log(result.length);
             if(result.length==0)
             {
                 instance.save().then((result)=>{
-                    console.log(req.body);
-                    console.log('success');
                     res.redirect('/');
                 }).catch((err)=>{
-                    console.log('failure');
                    res.send(err);
                 });
             }
@@ -56,11 +52,8 @@ app.post('/details',(req,res)=>{
             if(count==0)
             {
                 instance.save().then((result)=>{
-                    console.log(req.body);
-                    console.log('success');
                     res.redirect('/');
                 }).catch((err)=>{
-                    console.log('failure');
                    res.send(err);
                 });
             }      
@@ -74,33 +67,33 @@ app.post('/login',(req,res)=>{
          console.log(err);
          else
          {
-            
+             let count=0;
             if(result.length==0)
             {
                 res.render('login.ejs',{validation:" * Signup first",validationp: ""});
             }
             else{
             result.forEach((users)=>{
-                console.log(req.body);
-                console.log(users);
                 if(req.body.email==users.email&&req.body.Password==users.password)
                 {
                     current_user=req.body.email;
-                   console.log('success');
                    res.render('main.ejs',{title: users.title});
+                   count++;
                 }
                 else if(req.body.email==users.email&&req.body.Password!=users.password)
                 {
                     res.render('login.ejs',{validation:"",validationp: "* Wrong password"});
+                    count++;
                 }
             })  
-           
+           if(count==0){
+            res.render('login.ejs',{validation:" * Signup first",validationp: ""});
+           }
         }
          }
      })
 })
  app.post("/innerdetails",(req,res)=>{
-     console.log(1);
        Userdetail.find((err,result)=>{
            if(err)
            console.log(err);
@@ -108,13 +101,11 @@ app.post('/login',(req,res)=>{
                result.forEach((users)=>{
                    if(users.email==current_user)
                    {
-                        console.log(users)
                          users.title.push({
                             head: req.body.List,
                             data: [],
                             unique: String(Date.now())
                          });
-                         console.log(users);
                          users.save();
                          res.render('main.ejs',{title: users.title});
                    }
@@ -122,28 +113,66 @@ app.post('/login',(req,res)=>{
            }
        })
 })
- app.post('/tododata',(req,res)=>{
-    let dublicate;
-   Userdetail.find((err,result)=>{
-    if(err)
-    console.log(err);
-    else
-    {
-       result.forEach((user)=>{
-        if(user.email==current_user)
-        {   
-            console.log(req.body);
-             user.title.forEach((obj)=>{
-                 if(obj.unique==req.body.uniqueid){
-                     obj.data.push(req.body.List);
-                     dublicate=user.title
-                 }
-             })
+ app.post('/tododata', async (req,res)=>{
+    const person = await Userdetail.findOne({ email: current_user })
+    person.title.forEach((i) => {
+        if (i.unique === req.body.uniqueid) {
+            i.data.push(
+                {
+                    datainner: req.body.List,
+                    state: "con",
+                    sty: Date.now(),
+                    state2: "bs"
+                }
+                )
         }
-       })
-    }
-    console.log(dublicate);
-    Userdetail.updateOne({email : current_user},{title : dublicate});
-    res.render('main.ejs',{title: dublicate});
+    })
+
+    const update = { title: person.title }
+    await person.updateOne(update);
+
+    res.render('main.ejs', { title: update.title });
 })
+app.post('/innerdetails/:id', async (req,res)=>{
+    let counts=0;
+    const person = await Userdetail.findOne({ email: current_user })
+    for(let k=0;k<person.title.length;k++){
+        if(person.title[k].unique==req.params.id)
+        break;
+        counts+=1;
+    }
+    let data=person.title.slice(0,counts);
+    person.title=person.title.slice(counts+1,person.title.length);
+    person.title=data.concat(person.title);
+    const update = { title: person.title }
+    await person.updateOne(update);
+    res.json({msg:'/main'})
+})
+app.get('/main', async (req,res)=>{
+    const person2 = await Userdetail.findOne({ email: current_user })
+    res.render('main.ejs', { title: person2.title });
+})
+app.post('/button/:id', async (req,res)=>{
+    let counts=0;
+    console.log(req.params.id);
+    const person = await Userdetail.findOne({ email: current_user })
+    for(let k=0;k<person.title.length;k++){
+        for(let r=0;r<person.title[k].data.length;r++)
+        {   
+            if(person.title[k].data[r].sty==req.params.id)
+            {
+                console.log('entered');
+                 person.title[k].data[r].state="mo";
+                 person.title[k].data[r].state2="mbs";
+            }
+        }
+    }
+    const update = { title: person.title }
+    await person.updateOne(update);
+    res.json({msgs:'/main2'})
+})
+
+app.get('/main2', async (req,res)=>{
+    const person2 = await Userdetail.findOne({ email: current_user })
+    res.render('main.ejs', { title: person2.title });
 })
