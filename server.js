@@ -130,7 +130,7 @@ app.post('/login',(req,res)=>{
     const update = { title: person.title }
     await person.updateOne(update);
 
-    res.render('main.ejs', { title: update.title });
+    res.render('main.ejs', { title: update.title,email: req.body.email});
 })
 app.post('/innerdetails/:id/:id2', async (req,res)=>{
     let counts=0;
