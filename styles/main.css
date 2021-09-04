@@ -276,6 +276,9 @@ i:hover{
     margin-left: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.mbs{
+    display: none;
+}
 .con{
     color: black;
     font-size: 1.2em;
