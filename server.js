@@ -76,8 +76,7 @@ app.post('/login',(req,res)=>{
             result.forEach((users)=>{
                 if(req.body.email==users.email&&req.body.Password==users.password)
                 {
-                    current_user=req.body.email;
-                   res.render('main.ejs',{title: users.title});
+                   res.render('main.ejs',{title: users.title,email: req.body.email});
                    count++;
                 }
                 else if(req.body.email==users.email&&req.body.Password!=users.password)
@@ -99,7 +98,7 @@ app.post('/login',(req,res)=>{
            console.log(err);
            else{
                result.forEach((users)=>{
-                   if(users.email==current_user)
+                   if(users.email==req.body.email)
                    {
                          users.title.push({
                             head: req.body.List,
@@ -107,14 +106,14 @@ app.post('/login',(req,res)=>{
                             unique: String(Date.now())
                          });
                          users.save();
-                         res.render('main.ejs',{title: users.title});
+                         res.render('main.ejs',{title: users.title,email: req.body.email});
                    }
                })
            }
        })
 })
  app.post('/tododata', async (req,res)=>{
-    const person = await Userdetail.findOne({ email: current_user })
+    const person = await Userdetail.findOne({ email: req.body.email })
     person.title.forEach((i) => {
         if (i.unique === req.body.uniqueid) {
             i.data.push(
@@ -133,9 +132,9 @@ app.post('/login',(req,res)=>{
 
     res.render('main.ejs', { title: update.title });
 })
-app.post('/innerdetails/:id', async (req,res)=>{
+app.post('/innerdetails/:id/:id2', async (req,res)=>{
     let counts=0;
-    const person = await Userdetail.findOne({ email: current_user })
+    const person = await Userdetail.findOne({ email: req.params.id2 })
     for(let k=0;k<person.title.length;k++){
         if(person.title[k].unique==req.params.id)
         break;
@@ -146,16 +145,16 @@ app.post('/innerdetails/:id', async (req,res)=>{
     person.title=data.concat(person.title);
     const update = { title: person.title }
     await person.updateOne(update);
-    res.json({msg:'/main'})
+    res.json({msg:`/main/${req.body.email}`})
 })
-app.get('/main', async (req,res)=>{
-    const person2 = await Userdetail.findOne({ email: current_user })
-    res.render('main.ejs', { title: person2.title });
+app.get('/main/:id', async (req,res)=>{
+    const person2 = await Userdetail.findOne({ email: req.params.id })
+    res.render('main.ejs', { title: person2.title,email: req.params.id});
 })
-app.post('/button/:id', async (req,res)=>{
+app.post('/button/:id/:id2', async (req,res)=>{
     let counts=0;
     console.log(req.params.id);
-    const person = await Userdetail.findOne({ email: current_user })
+    const person = await Userdetail.findOne({ email: req.body.id2 })
     for(let k=0;k<person.title.length;k++){
         for(let r=0;r<person.title[k].data.length;r++)
         {   
@@ -169,10 +168,9 @@ app.post('/button/:id', async (req,res)=>{
     }
     const update = { title: person.title }
     await person.updateOne(update);
-    res.json({msgs:'/main2'})
+    res.json({msgs:`/main2/${req.body.email}`})
 })
-
-app.get('/main2', async (req,res)=>{
-    const person2 = await Userdetail.findOne({ email: current_user })
-    res.render('main.ejs', { title: person2.title });
+app.get('/main2/:id', async (req,res)=>{
+    const person2 = await Userdetail.findOne({ email: req.params.id })
+    res.render('main.ejs', { title: person2.title,email: req.params.id});
 })

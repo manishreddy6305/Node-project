@@ -33,6 +33,7 @@
     <div class="blur">
         <p class="new">Add New List</p>
         <input type="text" name="List" id="text" placeholder="Add New List" required>
+        <input type="text" value="<%=email%>" name="email" style="display: none">
         <p class="required">* Required</p>
         <div class="add-close">
         <input type="submit" class="s1" value="Add">
@@ -53,15 +54,15 @@
                                 <%sub.data.map(i1=>{ %>
                                     <div class="il">
                                         <p class="<%= i1.state %>"><%= i1.datainner%></p>
-                                        <button class="<%= i1.state2 %>" data-key="<%= i1.sty %>">Mark Done</button>
+                                        <button class="<%= i1.state2 %>" data-key="<%= i1.sty %>" data-email="<%=email%>">Mark Done</button>
                                       </div>
                                <% })%>
                             <% }%>
                         </div>
                         <div class="foot">
                             <div class="sd">
-                                <i class="fas fa-trash-alt delete" data-key="<%=sub.unique%>"></i>
-                                <i class="fas fa-plus-circle adding" data-key="<%=sub.unique%>"></i>
+                                <i class="fas fa-trash-alt delete" data-key="<%=sub.unique%>" ></i>
+                                <i class="fas fa-plus-circle adding" data-key="<%=sub.unique%>" data-email="<%=email%>"></i>
                             </div>
                         </div>
                     </div> 
@@ -78,6 +79,7 @@
         <div class="blur">
             <p class="new">Add New Item</p>
             <input type="text" style="display: none;" value="" name="uniqueid" id="diff">
+            <input type="text" value="<%=email%>" name="email" style="display: none">
             <input type="text" name="List" id="text1" placeholder="Add New List" required>
             <p class="required">* Required</p>
             <div class="add-close">
@@ -147,7 +149,8 @@ let icons2=document.querySelectorAll(".delete");
         element2.addEventListener('click',()=>{
             console.log("clicked")
             let id=element2.getAttribute('data-key')
-            const endpoint = `/innerdetails/${id}`;
+            let id2=element2.getAttribute('data-email')
+            const endpoint = `/innerdetails/${id}/${id2}`;
             fetch(endpoint,{
                 method: 'POST'
             }).then((res)=>res.json())
@@ -164,7 +167,8 @@ let bu=document.querySelectorAll(".bs");
         element3.addEventListener('click',()=>{
             console.log("clicked")
             let id=element3.getAttribute('data-key')
-            const endpoint = `/button/${id}`;
+            let id2=element3.getAttribute('data-email')
+            const endpoint = `/button/${id}/${id2}`;
             fetch(endpoint,{
                 method: 'POST'
             }).then((res)=>res.json())
