@@ -11,7 +11,7 @@ mongoose.connect(durl,(err,db)=>{
     global.db=db;
 });
 app.set('view engine','ejs');
-app.listen(3001);
+app.listen(process.env.PORT || 3001);
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('styles'));
 app.use(express.static('scripts'));
