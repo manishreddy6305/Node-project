@@ -43,21 +43,20 @@
     </div>
     <div class="main4">
         <div id="addlist">
+            <% console.log(title) %>
             <% if(title.length>0){ %>
                 <% title.map((sub)=>{ %>
                     <div class="todo">
                         <div class="sub"><%=sub.head%></div>
                         <div class="ali">
-                         <%   title.map((i)=>{ %>
-                            <% if(i.data.length>0){ %>
-                                <%i.data.map(i1=>{ %>
+                            <% if(sub.data.length>0){ %>
+                                <%sub.data.map(i1=>{ %>
                                     <div class="il">
-                                        <p class="con" ><%= i1%></p>
-                                        <button class="bs">Mark Done</button>
+                                        <p class="<%= i1.state %>"><%= i1.datainner%></p>
+                                        <button class="<%= i1.state2 %>" data-key="<%= i1.sty %>">Mark Done</button>
                                       </div>
                                <% })%>
                             <% }%>
-                        <% }) %>
                         </div>
                         <div class="foot">
                             <div class="sd">
@@ -143,6 +142,40 @@ let icons=document.querySelectorAll(".adding");
            y.setAttribute('value',q);
          });
      });
+let icons2=document.querySelectorAll(".delete");
+    icons2.forEach(element2 =>{
+        element2.addEventListener('click',()=>{
+            console.log("clicked")
+            let id=element2.getAttribute('data-key')
+            const endpoint = `/innerdetails/${id}`;
+            fetch(endpoint,{
+                method: 'POST'
+            }).then((res)=>res.json())
+            .then((data)=>{
+                window.location.href=data.msg
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        })
+    } )
+let bu=document.querySelectorAll(".bs");
+    bu.forEach(element3 =>{
+        element3.addEventListener('click',()=>{
+            console.log("clicked")
+            let id=element3.getAttribute('data-key')
+            const endpoint = `/button/${id}`;
+            fetch(endpoint,{
+                method: 'POST'
+            }).then((res)=>res.json())
+            .then((data)=>{
+                window.location.href=data.msgs
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        })
+    })
 let add1=document.getElementById("submit1");
 add1.addEventListener("click",()=>{
   if(document.getElementById("text1").value=="")
