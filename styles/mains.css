@@ -292,7 +292,7 @@ i:hover{
 @media screen and (min-width:300px)and (max-width:600px) {
     .blur{
         width: 75%;
-        left: 5%;
+        left: 15%;
         top: 50%;
     }
 }
