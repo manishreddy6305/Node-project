@@ -81,7 +81,7 @@ a{
 @media screen and (min-width:300px)and (max-width:600px) {
     .login{
         width: 80%;
-        height: 40%;
+        height: 60%;
     }
     input{
         height: 40px;
