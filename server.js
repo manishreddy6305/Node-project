@@ -145,16 +145,19 @@ app.post('/innerdetails/:id/:id2', async (req,res)=>{
     person.title=data.concat(person.title);
     const update = { title: person.title }
     await person.updateOne(update);
-    res.json({msg:`/main/${req.body.email}`})
+    const msg =`/delete/${req.params.id2}` 
+    console.log(msg);
+    res.json({msg});
 })
-app.get('/main/:id', async (req,res)=>{
+app.get('/delete/:id', async (req,res)=>{
+    console.log(req.params);
     const person2 = await Userdetail.findOne({ email: req.params.id })
     res.render('main.ejs', { title: person2.title,email: req.params.id});
 })
 app.post('/button/:id/:id2', async (req,res)=>{
     let counts=0;
-    console.log(req.params.id);
-    const person = await Userdetail.findOne({ email: req.body.id2 })
+
+    const person = await Userdetail.findOne({ email: req.params.id2 })
     for(let k=0;k<person.title.length;k++){
         for(let r=0;r<person.title[k].data.length;r++)
         {   
@@ -168,7 +171,7 @@ app.post('/button/:id/:id2', async (req,res)=>{
     }
     const update = { title: person.title }
     await person.updateOne(update);
-    res.json({msgs:`/main2/${req.body.email}`})
+    res.json({msgs:`/main2/${req.params.id2}`})
 })
 app.get('/main2/:id', async (req,res)=>{
     const person2 = await Userdetail.findOne({ email: req.params.id })
