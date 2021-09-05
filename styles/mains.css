@@ -289,3 +289,10 @@ i:hover{
     color: red;
     text-decoration: line-through;
 }
+@media screen and (min-width:300px)and (max-width:600px) {
+    .blur{
+        width: 75%;
+        left: 5%;
+        top: 50%;
+    }
+}
